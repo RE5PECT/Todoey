@@ -12,12 +12,14 @@ class TodoListViewController: UITableViewController {
    
     var itemArray = ["Find Mike","Buy Water","Destroy Demogorgon"]
     
-    @IBAction func addTodoItem(_ sender: Any) {
-        
-    }
+    let defaults = UserDefaults.standard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        if let items = defaults.array(forKey: "TodoListArray") as? [String] {
+            itemArray = items
+        }
     }
     //MARK: TableView Datasource Methods
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -50,6 +52,7 @@ class TodoListViewController: UITableViewController {
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
             let newTodo = textField.text
             self.itemArray.append(newTodo!)
+            self.defaults.set(self.itemArray, forKey: "TodoListArray")
             self.tableView.reloadData()
             
         }
